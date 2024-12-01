@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listado de Empleados</title>
+<style>
+/* Estilos Generales */
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+h2 {
+	color: #2C3E50;
+	font-size: 2.5em;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+/* Tabla */
+table {
+	width: 80%;
+	border-collapse: collapse;
+	margin-bottom: 30px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+	padding: 12px;
+	text-align: center;
+	border: 1px solid #ddd;
+}
+
+th {
+	background-color: #A3D9A5; /* Verde claro */
+	color: white;
+}
+
+tr:nth-child(even) {
+	background-color: #ecf0f1;
+}
+
+tr:hover {
+	background-color: #A3D9A5; /* Verde al pasar el ratón */
+	color: white;
+}
+
+/* Estilos para los formularios de los botones */
+input[type="submit"], a, button {
+	display: inline-block;
+	padding: 12px 20px;
+	background-color: #A3D9A5; /* Verde claro */
+	color: #2C3E50;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 8px;
+	border: none;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	margin: 5px 0;
+}
+
+input[type="submit"]:hover, a:hover, button:hover {
+	background-color: #86C98D; /* Verde más oscuro */
+	transform: translateY(-2px);
+}
+
+a {
+	width: auto;
+	cursor: pointer;
+}
+
+/* Diseño Responsivo */
+@media (max-width: 600px) {
+	h2 {
+		font-size: 2em;
+	}
+	table {
+		width: 100%;
+	}
+}
+</style>
+</head>
+<body>
+	<h1>Listado de Empleados</h1>
+
+	<!-- Mostrar mensaje de error si existe -->
+	<div th:if="${error}" class="error-message">
+		<p th:text="${error}"></p>
+	</div>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Sexo</th>
+				<th>Categoría</th>
+				<th>Años de Servicio</th>
+				<th>Sueldo</th>
+				<th>Modificar</th>
+				<th>Eliminar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Usamos Thymeleaf para recorrer los empleados -->
+			<tr th:each="empleado : ${empleados}">
+				<td th:text="${empleado.id}"></td>
+				<td th:text="${empleado.nombre}"></td>
+				<td th:text="${empleado.dni}"></td>
+				<td th:text="${empleado.sexo}"></td>
+				<td th:text="${empleado.categoria}"></td>
+				<td th:text="${empleado.anyos}"></td>
+				<td th:text="${sueldo.get(empleado.dni)}"></td>
+				<td>
+					<!-- Botón de "Editar" que redirige al controlador con el DNI del empleado -->
+					<form th:action="@{/empleados/editar/{dni}(dni=${empleado.dni})}" method="get">
+						<input type="submit" value="Editar">
+					</form>
+				</td>
+				<td>
+					<!-- Botón de "Eliminar" que redirige al controlador con el DNI del empleado -->
+					<form th:action="@{/empleados/eliminar/{dni}(dni=${empleado.dni})}" method="get">
+						<input type="submit" value="Eliminar">
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Botones para navegar -->
+	<button onclick="window.history.back()">Volver</button>
+	<button onclick="window.location.href='/'">Volver al Menú Principal</button>
+
+</body>
+</html>

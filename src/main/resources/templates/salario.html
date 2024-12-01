@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Buscar Salario por DNI</title>
+    <style>
+/* Estilos Generales */
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #eaf0f1;
+	margin: 0;
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+h2 {
+	color: #2C3E50;
+	font-size: 2.5em;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+/* Error Message Style */
+.error {
+	color: #ff4d4d;
+	margin-bottom: 20px;
+}
+
+form {
+	width: 70%;
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 30px;
+	border: 2px solid #A3D9A5;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+	color: #2C3E50;
+}
+
+input[type="text"] {
+	width: calc(100% - 20px);
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+input[type="submit"] {
+	padding: 15px 20px;
+	background-color: #A3D9A5;
+	color: #2C3E50;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.3s ease;
+	width: 100%;
+	text-transform: uppercase;
+}
+
+input[type="submit"]:hover {
+	background-color: #86C98D;
+	transform: translateY(-3px);
+}
+
+a {
+	display: block;
+	width: 70%;
+	padding: 15px 20px;
+	margin-bottom: 20px;
+	background-color: #A3D9A5;
+	color: #2C3E50;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 10px;
+	border: 2px solid #A3D9A5;
+	transition: background-color 0.3s ease, transform 0.3s ease, border 0.3s
+		ease;
+}
+
+a:hover {
+	background-color: #86C98D;
+	transform: translateY(-3px);
+	border-color: #86C98D;
+}
+
+button, a{
+            padding: 12px 20px;
+            background-color: #A3D9A5; /* Verde claro */
+            color: #2C3E50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        button:hover ,a:hover{
+            background-color: #86C98D; /* Verde más oscuro */
+            transform: translateY(-2px);
+        }
+
+/* Responsive Design */
+@media ( max-width : 600px) {
+	h2 {
+		font-size: 2em;
+	}
+	form, a {
+		width: 90%;
+	}
+}
+</style>
+</head>
+<body>
+    <h1>Mostrar Salario por DNI</h1>
+
+    <!-- Mostrar mensajes de error o éxito -->
+    <div th:if="${message}" th:text="${message}" style="color: red;"></div>
+
+    <!-- Formulario de búsqueda -->
+    <form th:action="@{/empleados/mostrarSalario}" method="get">
+        <label for="dni">DNI del Empleado:</label>
+        <input type="text" id="dni" name="dni" placeholder="Introduce el DNI" required />
+        <button type="submit">Consultar</button>
+    </form>
+
+    <!-- Mostrar los resultados si están disponibles -->
+    <div th:if="${empleado != null}">
+        <h3>Salario: <span th:text="${salario}"></span> Euros</h3>
+    </div>
+
+    <!-- Botones para navegar -->
+    <button onclick="window.history.back()">Volver</button>
+    <br>
+    <button onclick="window.location.href='/'">Volver al Menú Principal</button>
+</body>
+</html>

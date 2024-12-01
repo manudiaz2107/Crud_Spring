@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Empleados</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #2C3E50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Estilos para el formulario */
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #A3D9A5; /* Verde claro */
+            color: #2C3E50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #86C98D; /* Verde más oscuro */
+            transform: translateY(-2px);
+        }
+
+        /* Tabla */
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #A3D9A5; /* Verde claro */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ecf0f1;
+        }
+
+        tr:hover {
+            background-color: #A3D9A5; /* Verde al pasar el ratón */
+            color: white;
+        }
+
+        /* Diseño Responsivo */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            table {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Filtrar Empleados</h1>
+    <div th:if="${encontrados != null and encontrados.size() > 0}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Sexo</th>
+                    <th>Categoría</th>
+                    <th>Años trabajados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Usamos Thymeleaf para recorrer los empleados -->
+                <tr th:each="empleado : ${encontrados}">
+                    <td th:text="${empleado.id}"></td>
+                    <td th:text="${empleado.nombre}"></td>
+                    <td th:text="${empleado.dni}"></td>
+                    <td th:text="${empleado.sexo}"></td>
+                    <td th:text="${empleado.categoria}"></td>
+                    <td th:text="${empleado.anyos}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${encontrados == null or encontrados.size() == 0}">
+        <p>No se encontraron empleados.</p>
+    </div>
+    <br>
+
+    <form action="/empleados/buscar" method="get">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" th:value="${param.nombre}" />
+        
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" th:value="${param.dni}" />
+        
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo">
+            <option value="">Seleccionar</option>
+            <option value="M" th:selected="${param.sexo == 'M'}">Masculino</option>
+            <option value="F" th:selected="${param.sexo == 'F'}">Femenino</option>
+        </select>
+     
+        <label for="categoria">Categoría:</label>
+        <!-- Campo categoría modificado para seleccionar del 1 al 10 -->
+        <select id="categoria" name="categoria" required>
+            <option value="1" th:selected="${param.categoria == '1'}">1</option>
+            <option value="2" th:selected="${param.categoria == '2'}">2</option>
+            <option value="3" th:selected="${param.categoria == '3'}">3</option>
+            <option value="4" th:selected="${param.categoria == '4'}">4</option>
+            <option value="5" th:selected="${param.categoria == '5'}">5</option>
+            <option value="6" th:selected="${param.categoria == '6'}">6</option>
+            <option value="7" th:selected="${param.categoria == '7'}">7</option>
+            <option value="8" th:selected="${param.categoria == '8'}">8</option>
+            <option value="9" th:selected="${param.categoria == '9'}">9</option>
+            <option value="10" th:selected="${param.categoria == '10'}">10</option>
+        </select>
+        
+        <label for="anyos">Años trabajados:</label>
+        <input type="number" id="anyos" name="anyos" th:value="${param.anyos}" />
+        
+        <button type="submit">Buscar</button>
+    </form>
+
+    <button onclick="window.location.href='/empleados/buscar'">Resetear filtros</button>
+    <button onclick="window.history.back()">Volver</button>
+    <button onclick="window.location.href='/'">Volver al Menú Principal</button>
+
+</body>
+</html>
